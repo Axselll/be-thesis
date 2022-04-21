@@ -8,7 +8,7 @@ import { jwtGuard } from './auth/jwt/jwt.guard';
 export class AppController {
   constructor(private readonly appService: AppService) { }
 
-  // @UseGuards(jwtGuard)
+  @UseGuards(jwtGuard)
   @Get()
   getHello(): string {
     return this.appService.getHello();
