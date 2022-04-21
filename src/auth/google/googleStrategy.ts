@@ -3,7 +3,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Profile, Strategy } from 'passport-google-oauth20';
 import { User } from 'src/user/schema/user.schema';
 import { GoogleService } from './google.service';
-// import { CreateUserDto } from 'src/user/dto/create-user.dto';
+import { CreateUserDto } from 'src/user/dto/create-user.dto';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
@@ -20,11 +20,11 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
         accessToken: string,
         refreshToken: string,
         profile: Profile,
-        // createProfile: CreateUserDto,
+        createProfile: CreateUserDto,
     ): Promise<any> {
         const user = this.profileToUser(profile);
-        // const newUser = Object.assign(createProfile, user)
-        return await this.googleService.findOrCreate(user);
+        const newUser = Object.assign(user, createProfile)
+        return (await this.googleService.findUser(user) || this.googleService.createUser(newUser))
     }
 
     private profileToUser(profile: Profile): User {

@@ -10,7 +10,8 @@ import { ConfigModule } from '@nestjs/config';
 @Module({
   imports: [ConfigModule.forRoot({
     envFilePath: '.env',
-  }), UserModule, JwtModule.register({
+  }), UserModule,
+  JwtModule.register({
     secret: process.env.SECRET_KEY,
     signOptions: { expiresIn: '2m' }
   })],
