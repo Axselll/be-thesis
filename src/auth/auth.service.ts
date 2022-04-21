@@ -4,7 +4,7 @@ import { User } from 'src/user/schema/user.schema';
 
 @Injectable()
 export class AuthService {
-  constructor(private jwtService: JwtService) {}
+  constructor(private jwtService: JwtService) { }
 
   async signIn(user: User): Promise<any> {
     return {
