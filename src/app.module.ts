@@ -5,6 +5,8 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
+import { RepositoryModule } from './repository/repository.module';
+import { CommitModule } from './commit/commit.module';
 
 
 @Module({
@@ -15,6 +17,8 @@ import { ConfigModule } from '@nestjs/config';
       envFilePath: '.env',
     }),
     MongooseModule.forRoot(process.env.CONNECTION),
+    RepositoryModule,
+    CommitModule,
   ],
   controllers: [AppController],
   providers: [AppService],
