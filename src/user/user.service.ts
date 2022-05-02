@@ -12,9 +12,9 @@ export class UserService {
     return await new this.userModel(user).save();
   }
 
-  // async findAll(): Promise<User[]> {
-  //   return await this.userModel.find().exec();
-  // }
+  async findAll(): Promise<User[]> {
+    return await this.userModel.find().exec();
+  }
 
   async findOne(_id: string): Promise<User> {
     return await this.userModel.findById(_id).exec();
