@@ -9,12 +9,12 @@ export class RepositoryController {
   constructor(private readonly repositoryService: RepositoryService) { }
 
   @Get()
-  async findAll(): Promise<User[]> {
+  async findAllRepo(): Promise<User[]> {
     return await this.repositoryService.findAllRepo();
   }
 
   @Get('/:user_id/:repo_id')
-  async findOne(@Res() res,
+  async findOneRepo(@Res() res,
     @Param('user_id') user_id,
     @Param('repo_id') repo_id): Promise<User> {
     const response = await this.repositoryService.findOneRepo(user_id, repo_id)

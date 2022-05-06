@@ -12,10 +12,6 @@ export class Repository {
     @Prop()
     desc: string;
 
-    // @Prop({ type: Date, default: Date.now })
-    // @Transform(() => moment().format("DD/MM/YY"))
-    // createdTime: Date;
-
     @Prop({ type: [CommitedSchema] })
     commited: Types.Array<Commited>
 }

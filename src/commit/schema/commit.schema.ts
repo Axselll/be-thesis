@@ -1,11 +1,9 @@
 import { Document } from 'mongoose'
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
-import { Transform } from 'class-transformer';
-import moment from 'moment';
 
 export type CommitedSchema = Commited & Document;
 
-@Schema()
+@Schema({ timestamps: true })
 export class Commited {
     @Prop()
     title: string;
@@ -16,9 +14,11 @@ export class Commited {
     @Prop()
     file: string;
 
-    @Prop({ type: Date, default: Date.now })
-    @Transform(() => moment().format("DD/MM/YY"))
-    createdTime: Date;
+    @Prop({ default: Date.now })
+    createdAt: Date;
+
+    @Prop({ default: Date.now })
+    updatedAt: Date;
 }
 
 export const CommitedSchema = SchemaFactory.createForClass(Commited)
