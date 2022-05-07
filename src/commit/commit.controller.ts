@@ -6,7 +6,8 @@ import { CommitService } from './commit.service';
 import { CreateCommitDto } from './dto/create-commit.dto';
 import { UpdateCommitDto } from './dto/update-commit.dto';
 import { changeFileName, fileTypeFilter } from './utils/filetype.utils';
-import fs from 'fs'
+import * as fs from 'fs'
+import * as path from 'path'
 
 @Controller('commit')
 export class CommitController {
@@ -69,8 +70,28 @@ export class CommitController {
       createdAt: false,
       updatedAt: Date.now
     })
-    console.log(updatedCommit);
     const response = await this.commitService.updateCommit(user_id, repo_id, commited_id, updatedCommit)
     return res.status(HttpStatus.OK).json({ response })
+  }
+
+  @Delete('/:user_id/:repo_id/:commited_id/:file')
+  async deleteCommit(
+    @Res() res,
+    @Param('user_id') user_id: string,
+    @Param('repo_id') repo_id: string,
+    @Param('commited_id') commited_id: string,
+    @Param('file') file: string,
+  ): Promise<any> {
+    const response = await this.commitService.removeCommit(user_id, repo_id, commited_id)
+    await res.status(HttpStatus.OK).json({ response })
+    return fs.unlink(path.join('files', file), err => { if (err) return err })
+  }
+
+  @Get('/:file')
+  async downloadFile(
+    @Res() res,
+    @Param('file') file: string
+  ): Promise<any> {
+    res.sendFile(file, { root: 'files' })
   }
 }
