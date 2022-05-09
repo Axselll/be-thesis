@@ -19,24 +19,11 @@ export class CommitService {
     }
   }
 
-  async findOneCommit(user_id: string, repo_id: string, commit_id: string): Promise<User> {
+  async findOneCommit(commited_id: string): Promise<User> {
     try {
       const findResult = await this.commitedModel.findOne(
-        { "_id": user_id, "repository._id": repo_id, "commited._id": commit_id },
-        [
-          {
-            $match: {
-              "repository.commited.$": commit_id
-            }
-          },
-          { $unwind: "$repository" },
-          { $unwind: "$repository.commited" },
-          {
-            $match: {
-              "repository.commited.$": commit_id
-            }
-          },
-        ]
+        { "repository.commited._id": commited_id },
+        { "repository.$.commited": 1 }
       ).exec()
       return findResult
     } catch (error) {

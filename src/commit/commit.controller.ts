@@ -18,14 +18,14 @@ export class CommitController {
     return await this.commitService.findAllCommit()
   }
 
-  @Get('/:user_id/:repo_id/:commited_id')
+  @Get('/:commited_id')
   async findOneCommit(
     @Res() res,
-    @Param('user_id') user_id: string,
-    @Param('repo_id') repo_id: string,
+    // @Param('user_id') user_id: string,
+    // @Param('repo_id') repo_id: string,
     @Param('commited_id') commited_id: string
   ): Promise<User> {
-    const response = await this.commitService.findOneCommit(user_id, repo_id, commited_id)
+    const response = await this.commitService.findOneCommit(commited_id)
     return res.status(HttpStatus.OK).json({ response })
   }
 
@@ -66,7 +66,7 @@ export class CommitController {
     @UploadedFile() file: UpdateCommitDto["file"]
   ): Promise<User> {
     Object.assign(updatedCommit, {
-      file: file.path,
+      file: file?.path,
       createdAt: false,
       updatedAt: Date.now
     })
