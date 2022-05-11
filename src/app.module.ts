@@ -18,7 +18,6 @@ import { CommitModule } from './commit/commit.module';
     }),
     MongooseModule.forRoot(process.env.PROD_CONNECTION, {
       useNewUrlParser: true,
-      useCreateIndex: true,
       useUnifiedTopology: true
     }),
     RepositoryModule,
