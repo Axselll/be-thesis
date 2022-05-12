@@ -11,8 +11,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
         super({
             clientID: process.env.CLIENT_ID,
             clientSecret: process.env.CLIENT_SECRET,
-            callbackURL: 'https://api-backend-ta.herokuapp.com/auth/google/redirect',
-            // change to production link heroku 
+            callbackURL: process.env.CALLBACK_URL,
             scope: ['email', 'profile'],
         });
     }
