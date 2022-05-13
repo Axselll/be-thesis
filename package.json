@@ -6,8 +6,9 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "postinstall": "npm run prebuild && npm run build",
-    "prebuild": "rimraf dist",
+    "postinstall": "npm run prebuild && npm run build && npm run postbuild",
+    "postbuild": "mkdir files",
+    "prebuild": "rimraf dist && rimraf files",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
