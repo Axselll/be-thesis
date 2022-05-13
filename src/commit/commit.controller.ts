@@ -17,17 +17,6 @@ export class CommitController {
     return await this.commitService.findAllCommit()
   }
 
-  @Get('/:commited_id')
-  async findOneCommit(
-    @Res() res,
-    // @Param('user_id') user_id: string,
-    // @Param('repo_id') repo_id: string,
-    @Param('commited_id') commited_id: string
-  ): Promise<User> {
-    const response = await this.commitService.findOneCommit(commited_id)
-    return res.status(HttpStatus.OK).json({ response })
-  }
-
   @Post('/:user_id/:repo_id')
   @UseInterceptors(FileInterceptor('file', {
     storage: diskStorage({
@@ -73,7 +62,7 @@ export class CommitController {
     return res.status(HttpStatus.OK).json({ response })
   }
 
-  @Delete('/:user_id/:repo_id/:commited_id/')
+  @Delete('/:user_id/:repo_id/:commited_id/:file')
   async deleteCommit(
     @Res() res,
     @Param('user_id') user_id: string,
@@ -91,6 +80,6 @@ export class CommitController {
     @Res() res,
     @Param('file') file: string
   ): Promise<any> {
-    res.sendFile(file, { root: 'files' })
+    res.sendFile(file, { root: './files' })
   }
 }

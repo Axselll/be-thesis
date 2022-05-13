@@ -19,18 +19,6 @@ export class CommitService {
     }
   }
 
-  async findOneCommit(commited_id: string): Promise<User> {
-    try {
-      const findResult = await this.commitedModel.findOne(
-        { "repository.commited._id": commited_id },
-        { "repository.$.commited": 1 }
-      ).exec()
-      return findResult
-    } catch (error) {
-      throw (error)
-    }
-  }
-
   async addCommit(user_id: string, repo_id: string, commit: CreateCommitDto): Promise<User> {
     try {
       const addResult = await this.commitedModel.findByIdAndUpdate(
