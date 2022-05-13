@@ -6,7 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "postinstall": "npm run prebuild",
+    "postinstall": "npm run prebuild && npm run postbuild",
     "postbuild": "mkdir files",
     "prebuild": "rimraf dist",
     "build": "nest build",
