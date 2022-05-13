@@ -7,6 +7,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
 import { RepositoryModule } from './repository/repository.module';
 import { CommitModule } from './commit/commit.module';
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
 
 
 @Module({
@@ -22,6 +23,7 @@ import { CommitModule } from './commit/commit.module';
     }),
     RepositoryModule,
     CommitModule,
+    CloudinaryModule,
   ],
   controllers: [AppController],
   providers: [AppService],
