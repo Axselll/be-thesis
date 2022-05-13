@@ -2,21 +2,15 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Res, HttpStatus, Use
 import { FileInterceptor } from '@nestjs/platform-express';
 import { User } from 'src/user/schema/user.schema';
 import { CommitService } from './commit.service';
-import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { CreateCommitDto } from './dto/create-commit.dto';
 import { UpdateCommitDto } from './dto/update-commit.dto';
 import { changeFileName, fileTypeFilter } from './utils/filetype.utils';
 import * as fs from 'fs'
 import * as path from 'path'
-import { CloudinaryStorage } from 'multer-storage-cloudinary';
-import cloudinary = require('cloudinary')
-const cloud = cloudinary.v2
-
+import { diskStorage } from 'multer';
 @Controller('commit')
 export class CommitController {
-  constructor(
-    private readonly commitService: CommitService,
-    private readonly CloudinaryService: CloudinaryService) { }
+  constructor(private readonly commitService: CommitService) { }
 
   @Get()
   async findAllCommit(): Promise<User[]> {
@@ -36,14 +30,9 @@ export class CommitController {
 
   @Post('/:user_id/:repo_id')
   @UseInterceptors(FileInterceptor('file', {
-    storage: new CloudinaryStorage({
-      cloudinary: cloud,
-      params: async (req, file) => {
-        return {
-          folder: 'TA-File',
-          resource_type: 'raw'
-        }
-      }
+    storage: diskStorage({
+      destination: './files',
+      filename: changeFileName
     }),
     fileFilter: fileTypeFilter
   }))
@@ -55,17 +44,16 @@ export class CommitController {
     @UploadedFile() file: CreateCommitDto["file"]
   ): Promise<User> {
     Object.assign(newCommit, { file: file.path })
-    await this.CloudinaryService.uploadImage(file)
     const response = await this.commitService.addCommit(user_id, repo_id, newCommit);
     return res.status(HttpStatus.CREATED).json({ response });
   }
 
   @Patch('/:user_id/:repo_id/:commited_id')
   @UseInterceptors(FileInterceptor('file', {
-    // storage: diskStorage({
-    //   destination: './files',
-    //   filename: changeFileName
-    // }),
+    storage: diskStorage({
+      destination: './files',
+      filename: changeFileName
+    }),
     fileFilter: fileTypeFilter
   }))
   async updateCommit(
@@ -91,11 +79,11 @@ export class CommitController {
     @Param('user_id') user_id: string,
     @Param('repo_id') repo_id: string,
     @Param('commited_id') commited_id: string,
-    // @Param('file') file: string,
+    @Param('file') file: string,
   ): Promise<any> {
     const response = await this.commitService.removeCommit(user_id, repo_id, commited_id)
-    return res.status(HttpStatus.OK).json({ response })
-    // return fs.unlink(path.join('files', file), err => { if (err) return err })
+    await res.status(HttpStatus.OK).json({ response })
+    return fs.unlink(path.join('files', file), err => { if (err) return err })
   }
 
   @Get('/:file')
