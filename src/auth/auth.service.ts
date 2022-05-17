@@ -8,6 +8,7 @@ export class AuthService {
 
   async signIn(user: User): Promise<any> {
     return {
+      loggedInUser: user,
       access_token: this.jwtService.sign({
         email: user.email,
         name: `${user.firstName} ${user.lastName}`
