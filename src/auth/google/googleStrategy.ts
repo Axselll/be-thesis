@@ -4,6 +4,8 @@ import { Profile, Strategy } from 'passport-google-oauth20';
 import { User } from 'src/user/schema/user.schema';
 import { GoogleService } from './google.service';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
+import * as dotenv from 'dotenv'
+dotenv.config()
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
@@ -11,7 +13,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
         super({
             clientID: process.env.CLIENT_ID,
             clientSecret: process.env.CLIENT_SECRET,
-            callbackURL: process.env.CALLBACK_URL,
+            callbackURL: process.env.CALLBACK_URL || process.env.USER_CALLBACK_URL,
             scope: ['email', 'profile'],
         });
     }

@@ -7,10 +7,16 @@ import { GoogleStrategy } from './google/googleStrategy';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
 import { JwtStrategy } from './jwt/jwtStrategy';
+import { PassportModule } from '@nestjs/passport';
+import { GoogleSerializer } from './google/GoogleSerializer';
 
 
 @Module({
   imports: [
+    PassportModule.register({
+      defaultStrategy: 'google',
+      session: true
+    }),
     ConfigModule.forRoot({
       envFilePath: '.env',
     }),
@@ -21,6 +27,6 @@ import { JwtStrategy } from './jwt/jwtStrategy';
     })
   ],
   controllers: [AuthController],
-  providers: [AuthService, GoogleService, GoogleStrategy, JwtStrategy]
+  providers: [AuthService, GoogleService, GoogleStrategy, JwtStrategy, GoogleSerializer]
 })
 export class AuthModule { }

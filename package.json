@@ -32,6 +32,7 @@
     "@nestjs/passport": "^8.2.1",
     "@nestjs/platform-express": "^8.4.4",
     "dotenv": "^16.0.0",
+    "express-session": "^1.17.3",
     "mongoose": "^6.3.0",
     "multer-gridfs-storage": "^5.0.2",
     "multer-storage-cloudinary": "^4.0.0",
