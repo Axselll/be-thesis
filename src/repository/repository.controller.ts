@@ -5,7 +5,7 @@ import { UpdateRepositoryDto } from './dto/update-repository.dto';
 import { User } from 'src/user/schema/user.schema';
 import { jwtGuard } from 'src/auth/jwt/jwt.guard';
 
-@UseGuards(jwtGuard)
+// @UseGuards(jwtGuard)
 @Controller('repository')
 export class RepositoryController {
   constructor(private readonly repositoryService: RepositoryService) { }

@@ -1,5 +1,4 @@
-import { Controller, Get, UseGuards, HttpStatus, Req, Res, Next } from '@nestjs/common';
-import { Request } from 'express';
+import { Controller, Get, UseGuards, HttpStatus, Req, Res } from '@nestjs/common';
 import { User } from 'src/user/schema/user.schema';
 import { AuthService } from './auth.service';
 import { googleGuard } from './google/google.guard';
@@ -18,21 +17,13 @@ export class AuthController {
 
   @UseGuards(googleGuard)
   @Get('google/redirect')
-  async googleAuthRedirect(@Req() req: Request): Promise<any> {
-    return {
-      msg: 'logged in',
-      user: req.user
-    }
-    // return this.authService.signIn(req.user as User)
-    // const response = await this.authService.signIn(req.user as User)
-    // await res.status(HttpStatus.OK).json(response)
-    // console.log(response);
-    // return res.redirect(process.env.ROUTE_TO_FE)
+  async googleAuthRedirect(@Res() res: any): Promise<any> {
+    return res.redirect(process.env.ROUTE_TO_FE)
   }
 
   @UseGuards(authenticatedGuard)
   @Get('user')
-  async getLoggedInUser(@Req() req): Promise<any> {
+  async getLoggedInUser(@Req() req: any): Promise<any> {
     return this.authService.signIn(req.user as User)
   }
 }

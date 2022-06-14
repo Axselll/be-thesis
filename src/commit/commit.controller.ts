@@ -8,6 +8,8 @@ import { changeFileName, fileTypeFilter } from './utils/filetype.utils';
 import * as fs from 'fs'
 import * as path from 'path'
 import { diskStorage } from 'multer';
+
+// @UseGuards(jwtGuard)
 @Controller('commit')
 export class CommitController {
   constructor(private readonly commitService: CommitService) { }
