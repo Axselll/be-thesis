@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Res, HttpStatus, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Res, HttpStatus, UseInterceptors, UploadedFile, UseGuards } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { User } from 'src/user/schema/user.schema';
 import { CommitService } from './commit.service';
@@ -8,8 +8,9 @@ import { changeFileName, fileTypeFilter } from './utils/filetype.utils';
 import * as fs from 'fs'
 import * as path from 'path'
 import { diskStorage } from 'multer';
+import { jwtGuard } from 'src/auth/jwt/jwt.guard';
 
-// @UseGuards(jwtGuard)
+@UseGuards(jwtGuard)
 @Controller('commit')
 export class CommitController {
   constructor(private readonly commitService: CommitService) { }
