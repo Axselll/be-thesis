@@ -35,7 +35,7 @@ export class CommitController {
     @Body() newCommit: CreateCommitDto,
     @UploadedFile() file: CreateCommitDto["file"]
   ): Promise<User> {
-    Object.assign(newCommit, { file: file.path })
+    Object.assign(newCommit, { file: file.filename })
     const response = await this.commitService.addCommit(user_id, repo_id, newCommit);
     return res.status(HttpStatus.CREATED).json({ response });
   }
@@ -57,7 +57,7 @@ export class CommitController {
     @UploadedFile() file: UpdateCommitDto["file"]
   ): Promise<User> {
     Object.assign(updatedCommit, {
-      file: file?.path,
+      file: file?.filename,
       createdAt: false,
       updatedAt: Date.now
     })
