@@ -9,17 +9,20 @@ import * as fs from 'fs'
 import * as path from 'path'
 import { diskStorage } from 'multer';
 import { jwtGuard } from 'src/auth/jwt/jwt.guard';
+import { authenticatedGuard } from 'src/auth/google/isAuthenticated.guard';
 
-@UseGuards(jwtGuard)
+
 @Controller('commit')
 export class CommitController {
   constructor(private readonly commitService: CommitService) { }
 
+  @UseGuards(jwtGuard)
   @Get()
   async findAllCommit(): Promise<User[]> {
     return await this.commitService.findAllCommit()
   }
 
+  @UseGuards(jwtGuard)
   @Post('/:user_id/:repo_id')
   @UseInterceptors(FileInterceptor('file', {
     storage: diskStorage({
@@ -40,6 +43,7 @@ export class CommitController {
     return res.status(HttpStatus.CREATED).json({ response });
   }
 
+  @UseGuards(jwtGuard)
   @Patch('/:user_id/:repo_id/:commited_id')
   @UseInterceptors(FileInterceptor('file', {
     storage: diskStorage({
@@ -65,6 +69,7 @@ export class CommitController {
     return res.status(HttpStatus.OK).json({ response })
   }
 
+  @UseGuards(jwtGuard)
   @Delete('/:user_id/:repo_id/:commited_id/:file')
   async deleteCommit(
     @Res() res,
@@ -78,6 +83,7 @@ export class CommitController {
     return fs.unlink(path.join('files', file), err => { if (err) return err })
   }
 
+  @UseGuards(authenticatedGuard)
   @Get('/:file')
   async downloadFile(
     @Res() res,
